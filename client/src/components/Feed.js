@@ -1,39 +1,36 @@
 import {React, useState} from 'react'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import Day from './Day';
 import { Grid, Item } from '@mui/material';
+import moment from 'moment';
 
-
-function Montly(props){
+function TheDate(props){
     const [mydate, setMydate] = useState(new Date());
-    const onChange = date => {
-      setMydate(date);
-      props.onChange(mydate);
-    }
-    return (
-  
-      <div userdate={mydate}>
-        <Calendar onChange={onChange} value={mydate} />
-      </div>
+
+    return (<>
+      <div>
+        <Calendar onChange={setMydate} value={mydate} />
+        <div>
+           {moment(mydate).format("YYYY년 MM월 DD일 dddd")} 
+         </div>
+      </div> 
+      </>
     );
   }
   //나중에 날짜 포맷 변경하기
 
 function Feed(){
-    const getDate = (_mydate) => {
-        console.log("부모 컴포넌트가 "+_mydate+"라는 데이터를 전달받음")
-    }
 
-    return(
-        <Grid container spacing={2}>
-            <Grid item xs={4}>
-                <Montly onChange={getDate}></Montly>
-            </Grid>
-            <Grid item xs={6}>
-                <Day/>
-            </Grid>
+    return(<>
+      <Grid container spacing={2}>
+        <Grid item xs = {3}>
+          <TheDate></TheDate>
         </Grid>
+      
+        <Grid item xs={9}>
+        </Grid>
+      </Grid>
+      </>
     )
 }
 
