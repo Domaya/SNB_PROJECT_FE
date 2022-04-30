@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Grid, Item } from '@mui/material';
 import moment from 'moment';
+import Todo from './Todo';
 
 function TheDate(props){
     const [mydate, setMydate] = useState(new Date());
@@ -30,6 +31,7 @@ function Feed(){
         <Grid item xs={9}>
         </Grid>
       </Grid>
+      <Todo/>
       </>
     )
 }
