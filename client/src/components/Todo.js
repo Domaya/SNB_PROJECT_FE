@@ -12,39 +12,48 @@ function Todo(){
             {id:1, content:"test 2", done:true}
         ]
     )
-    const [nextId, setNextId] = useState(todoItem.length+1);
+    const [nextId, setNextId] = useState(todoItem.length);
     const [InputTask, setInputTask] = useState("")
+
     const onTaskHandler = (event)=>{
         setInputTask(event.target.value);
     }
     function CreateItem(event){
         event.preventDefault();
-        console.log(InputTask)
         console.log(nextId)
         const newItem = {id:nextId, content:InputTask, done:false}
         const newItems = [...todoItem]
         newItems.push(newItem);
         setTodoItem(newItems);
         setNextId(nextId+1)
+        setInputTask("")
+
     }
+    function HandleChecked(event){
+        if(event.todoItem.done === true){
+            return true
+        }else{
+            return false
+        }
+    } //done 여부에 따라서 체크 되게 안되게
 
 
     return(<>
         
 
         <FormGroup>
-        
             <form onSubmit={CreateItem}>
                 <Checkbox disabled></Checkbox>
                 <input type='text' placeholder='오늘의 할 일은?' onChange={onTaskHandler}></input>
-                {/* <Button type='submit'></Button> */}
+                <Button type='submit'></Button>
             </form>
             <Box>
                 {todoItem.map((item)=>{
                     return <>
                     <ListItem >
                         <FormControlLabel control={<Checkbox />}
-                        label={item.content} key={item.id}/>
+                        label={item.content+" "+item.id}
+                        />
                     </ListItem>
                     </>
                 })}
