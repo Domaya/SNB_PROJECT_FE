@@ -50,7 +50,9 @@ function Todo(props){
         setTodayTask(FilterTask());
         console.log('날짜 변경')
     }, [mydate])
-
+    useEffect(()=>{
+        setTodayTask(FilterTask());
+    }, [todoItem])
     return(<>
         
 
