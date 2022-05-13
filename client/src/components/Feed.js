@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Grid, Item } from '@mui/material';
@@ -22,11 +22,16 @@ import Todo from './Todo';
 function Feed(){
   const [mydate, setMydate] = useState(new Date());
 
+  useEffect(()=>{
+    console.log("HEllo")
+  },[])
     return(<>
       <Grid container spacing={2}>
         <Grid item xs = {3}>
         <div>
-        <Calendar onChange={setMydate} value={mydate} />
+        <Calendar onChange={setMydate} value={mydate} onClickDay={(value)=>{
+        console.log("선택한 날짜 "+moment(value).format('YYMMDD'))
+      }}/>
         {/* <div>
            {moment(mydate).format("YYYY년 MM월 DD일 dddd")} 
          </div> */}
@@ -36,7 +41,7 @@ function Feed(){
         <Grid item xs={9}>
         </Grid>
       </Grid>
-      <Todo mydate={mydate}/>
+      <Todo mydate={mydate} />
       </>
     )
 }
