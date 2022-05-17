@@ -1,9 +1,10 @@
-import {React, useState, useEffect} from 'react'
+import {React, useState, useEffect, useCallback} from 'react'
 import { Box, Button, Input } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import moment from 'moment';
+import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
 
 function Todo(props){
     const mydate = moment(props.mydate).format('YYMMDD'); //220512와 같은 포맷으로..String임
@@ -11,12 +12,17 @@ function Todo(props){
     const [todoItem, setTodoItem] = useState(
         [
             {id:0, content:"첫번째 아이템", done:false, date:moment().format('YYMMDD')},
-            {id:1, content:"test 2", done:true, date:'220513'}
+            {id:1, content:"test 2", done:true, date:'220513'},
+            {id:2, content:"머리감기", done:false, date:moment().format('YYMMDD')},
+            {id:3, content:"필라테스", done:false, date:moment().format('YYMMDD')},
+            {id:4, content:"미용실", done:true, date:moment().format('YYMMDD')},
         ]
     )
     const [nextId, setNextId] = useState(todoItem.length);
     const [todayTask, setTodayTask] = useState(FilterTask());
     const [InputTask, setInputTask] = useState("")
+
+    const [checkList, setCheckList] = useState([]);
 
     const onTaskHandler = (event)=>{
         setInputTask(event.target.value);
@@ -32,12 +38,7 @@ function Todo(props){
         //- Form을 submit 한 후 초기화를 submit안에서 해주면 서버에서 오류시 글이 전달되지 않았으나 사용자의 글이 지워지기 때문에 문제가 될 소지가 있음
         //useEffect에서 redux에서 post가 성공하였을때 실행되는 변수( signInDone과 같은)를 받아 데이터 전송 성공시 초기화가 되도록 해야 함
     }
-    function HandleChecked(event){
-        if(event.target.checked==true){
-            console.log(event.target)
-            console.log(event.target.todoItem)
-        }
-    } //done 여부에 따라서 체크 되게 안되게
+    
    
     function FilterTask(){
         const items = todoItem.filter(item => {
@@ -45,14 +46,33 @@ function Todo(props){
         })
         return items
     }
+
+    // function HandleChecked(event){
+    //     setTodoItem(
+    //         todoItem.map((todo) =>
+    //         todo.id === id ? {...todo, checked:!todo.done} : todo)
+    //     )
+    // } //done 여부에 따라서 체크 되게 안되게
+    const onToggle = useCallback(
+        (id) => {
+          setTodoItem(
+            todoItem.map((todo) =>
+              todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+            ),
+          );
+        },
+        [todoItem],
+      );
     useEffect(()=>{
         console.log(FilterTask())
         setTodayTask(FilterTask());
-        console.log('날짜 변경')
     }, [mydate])
     useEffect(()=>{
         setTodayTask(FilterTask());
     }, [todoItem])
+    useEffect(()=>{
+        console.log(checkList)
+    }, [checkList])
     return(<>
         
 
@@ -66,13 +86,22 @@ function Todo(props){
                 <Button type='submit'></Button>
             </form>
                 {todayTask.map((item)=>{
-                    return <div key={item.id}>
-                    {/* <ListItem > */}
-                        <FormControlLabel control={<Checkbox onChange={HandleChecked} />}
-                        label={item.content+" id:"+item.id+"   date:"+item.date+"   done:"+item.done}
-                        />
-                    {/* </ListItem> */}
-                    </div>
+                    return <div key={item.id} >
+                        <li >
+                            {item.done ?  <BiCheckboxChecked />: <BiCheckbox />}
+                            {item.content}
+                        </li>
+                        </div>
+                    // <div key={item.id}>
+                        
+                    // {/* <ListItem > */}
+                    //     <FormControlLabel id={item.id} checked={item.done} onChange={(event)=>{
+                    //         {HandleChecked(event.target.checked, event.target.id)}
+                    //     }} control={<Checkbox />}
+                    //     label={item.content+" id:"+item.id+"   date:"+item.date+"   done:"+item.done}
+                    //     />
+                    // {/* </ListItem> */}
+                    // </div>
                 })}
             
             
