@@ -1,7 +1,9 @@
 import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Input } from '@mui/material';
+import { Box, Button, Input, List, ListItem, ListItemButton, ListItemText, TextField, InputLabel, FormHelperText } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import moment from 'moment';
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
@@ -22,7 +24,6 @@ function Todo(props){
     const [todayTask, setTodayTask] = useState(FilterTask());
     const [InputTask, setInputTask] = useState("")
 
-    const [checkList, setCheckList] = useState([]);
 
     const onTaskHandler = (event)=>{
         setInputTask(event.target.value);
@@ -53,16 +54,30 @@ function Todo(props){
     //         todo.id === id ? {...todo, checked:!todo.done} : todo)
     //     )
     // } //done 여부에 따라서 체크 되게 안되게
-    const onToggle = useCallback(
-        (id) => {
-          setTodoItem(
-            todoItem.map((todo) =>
-              todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-            ),
-          );
-        },
-        [todoItem],
-      );
+    // const onToggle = useCallback(
+    //     (id) => {
+    //       setTodoItem(
+    //         todoItem.map((todo) =>
+    //           todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+    //         ),
+    //       );
+    //     },
+    //     [todoItem],
+    //   );
+
+    const onToggle = (item)=> ()=> {
+        const copyItem = [...todoItem];
+        const tempItem = {id:item.id, content:item.content, done:!(item.done), date:item.date}
+
+        // if (doneCheck===false) {
+        //     copyItem[item.id] = tempItem;
+        // } else {
+        // newChecked.splice(currentId, 1);
+        // }
+        // setCheckedList(newChecked);
+        copyItem[item.id] = tempItem;
+        setTodoItem(copyItem);
+    }
     useEffect(()=>{
         console.log(FilterTask())
         setTodayTask(FilterTask());
@@ -70,28 +85,34 @@ function Todo(props){
     useEffect(()=>{
         setTodayTask(FilterTask());
     }, [todoItem])
-    useEffect(()=>{
-        console.log(checkList)
-    }, [checkList])
+
     return(<>
         
 
         <FormGroup>
-        <div>
-           {moment(props.mydate).format("YYYY년 MM월 DD일 dddd")} 
-         </div>
-            <form onSubmit={CreateItem}>
-                <Checkbox disabled></Checkbox>
-                <input type='text' placeholder='오늘의 할 일은?' onChange={onTaskHandler}></input>
-                <Button type='submit'></Button>
-            </form>
+            <div>
+            {moment(props.mydate).format("YYYY년 MM월 DD일 dddd")} 
+            </div>
+            
+                <form onSubmit={CreateItem}>
+                    {/* <Checkbox disabled></Checkbox> */}
+                    <CheckBoxOutlineBlankIcon />
+                    <TextField id="outlined-basic" placeholder='오늘의 할 일은?' size='small' variant="outlined" onChange={onTaskHandler} />
+                    {/* <input type='text' placeholder='오늘의 할 일은?' onChange={onTaskHandler}></input> */}
+                    <Button type='submit'></Button>
+                </form>
+            
                 {todayTask.map((item)=>{
-                    return <div key={item.id} >
-                        <li >
+                    return <ListItem key={item.id}>
+                        <ListItemButton disableRipple onClick={onToggle(item)}>
+                            <Checkbox disableRipple checked={item.done}/>
+                            <ListItemText primary={`${item.content}  ${item.done}`}></ListItemText>
+                        </ListItemButton>
+                        {/* <li >
                             {item.done ?  <BiCheckboxChecked />: <BiCheckbox />}
-                            {item.content}
-                        </li>
-                        </div>
+                            {item.content}+{item.id}
+                        </li> */}   
+                        </ListItem>
                     // <div key={item.id}>
                         
                     // {/* <ListItem > */}
