@@ -1,11 +1,12 @@
 import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Input, List, ListItem, ListItemButton, ListItemText, TextField, InputLabel, FormHelperText } from '@mui/material';
+import { Box, Button, Input, List, ListItem, ListItemButton, ListItemText, TextField, InputLabel, FormHelperText, IconButton } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import moment from 'moment';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
 
 function Todo(props){
@@ -78,6 +79,18 @@ function Todo(props){
         copyItem[item.id] = tempItem;
         setTodoItem(copyItem);
     }
+
+    const deleteItem = (item) => () => {
+        const id = item.id;
+        setTodoItem(
+            todoItem.filter(
+                item => {
+                    return item.id !== id;
+                }
+            )
+        )
+    }
+
     useEffect(()=>{
         console.log(FilterTask())
         setTodayTask(FilterTask());
@@ -103,7 +116,13 @@ function Todo(props){
                 </form>
             
                 {todayTask.map((item)=>{
-                    return <ListItem key={item.id}>
+                    return <ListItem key={item.id}
+                        secondaryAction={
+                            <IconButton edge="end" aria-label="deletes" onClick={deleteItem(item)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        }
+                    >
                         <ListItemButton disableRipple onClick={onToggle(item)}>
                             <Checkbox disableRipple checked={item.done}/>
                             <ListItemText primary={`${item.content}  ${item.done}`}></ListItemText>
