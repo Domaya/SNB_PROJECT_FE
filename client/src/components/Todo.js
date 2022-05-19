@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import moment from 'moment';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
 
 function Todo(props){
@@ -37,6 +38,7 @@ function Todo(props){
         newItems.push(newItem);
         setTodoItem(newItems);
         setNextId(nextId+1);
+        event.target.reset();
         //- Form을 submit 한 후 초기화를 submit안에서 해주면 서버에서 오류시 글이 전달되지 않았으나 사용자의 글이 지워지기 때문에 문제가 될 소지가 있음
         //useEffect에서 redux에서 post가 성공하였을때 실행되는 변수( signInDone과 같은)를 받아 데이터 전송 성공시 초기화가 되도록 해야 함
     }
@@ -49,33 +51,10 @@ function Todo(props){
         return items
     }
 
-    // function HandleChecked(event){
-    //     setTodoItem(
-    //         todoItem.map((todo) =>
-    //         todo.id === id ? {...todo, checked:!todo.done} : todo)
-    //     )
-    // } //done 여부에 따라서 체크 되게 안되게
-    // const onToggle = useCallback(
-    //     (id) => {
-    //       setTodoItem(
-    //         todoItem.map((todo) =>
-    //           todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-    //         ),
-    //       );
-    //     },
-    //     [todoItem],
-    //   );
 
     const onToggle = (item)=> ()=> {
         const copyItem = [...todoItem];
         const tempItem = {id:item.id, content:item.content, done:!(item.done), date:item.date}
-
-        // if (doneCheck===false) {
-        //     copyItem[item.id] = tempItem;
-        // } else {
-        // newChecked.splice(currentId, 1);
-        // }
-        // setCheckedList(newChecked);
         copyItem[item.id] = tempItem;
         setTodoItem(copyItem);
     }
@@ -99,6 +78,7 @@ function Todo(props){
         setTodayTask(FilterTask());
     }, [todoItem])
 
+
     return(<>
         
 
@@ -108,11 +88,13 @@ function Todo(props){
             </div>
             
                 <form onSubmit={CreateItem}>
-                    {/* <Checkbox disabled></Checkbox> */}
                     <CheckBoxOutlineBlankIcon />
                     <TextField id="outlined-basic" placeholder='오늘의 할 일은?' size='small' variant="outlined" onChange={onTaskHandler} />
                     {/* <input type='text' placeholder='오늘의 할 일은?' onChange={onTaskHandler}></input> */}
-                    <Button type='submit'></Button>
+                    {/* <Button type='submit'></Button> */}
+                    <IconButton type={'submit'}>
+                        <AddIcon />
+                    </IconButton>
                 </form>
             
                 {todayTask.map((item)=>{

@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Box } from '@mui/material';
 import React, {useState} from 'react';
 import {useForm} from "react-hook-form"
 
@@ -20,6 +20,13 @@ function Join(){
     
 
     return <div>
+        <Box
+            sx={{
+                borderRadius: 2,
+                p: 2,
+                minWidth: 300,
+              }}
+        >
         <form action='@@서버주소@@' method="post"
             onSubmit={handleSubmit(onSubmit, onError)}>
             <TextField type="text" name="userId" placeholder='ID' {...register('uerId')} margin="dense" fullWidth />
@@ -33,6 +40,7 @@ function Join(){
             <TextField type='text' name='email' placeholder='E-MAIL' {...register('email')}margin="dense" fullWidth />
             <Button type="submit" variant="contained" color="primary">가입하기</Button>
         </form>
+        </Box>
     </div>
 }
 

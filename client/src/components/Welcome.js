@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Join from './Join';
 import {BrowserRouter, Routes, Route, Link} from "react-router-dom"
+import { TextField } from '@mui/material';
 
 
 //비로그인 상태일때
@@ -32,12 +34,19 @@ function Welcome(){
 
     return <div>
         <BrowserRouter>
+        <Box  sx={{
+            borderRadius: 2,
+            p: 2,
+            minWidth: 300,
+            }}>
+            
+        
             <h2>WELCOME</h2>
             {wantJoin?<Join /> : 
             <div className="starting">
                 <form onSubmit={onSubmit}>
-                    <p><input type="text" name="id" placeholder="ID" value={inputId} onChange={onIdHandler}/></p>
-                    <p><input type="password" placeholder="PASSWORD" value={inputPw} onChange={onPwHandler}/></p>
+                    <TextField  type="text" name="id" placeholder="ID" value={inputId} onChange={onIdHandler}/><br/>
+                    <TextField  type="password" placeholder="PASSWORD" value={inputPw} onChange={onPwHandler}/>
                     <Button type="submit">로그인</Button>
                 </form>
                 <Link to="/join" onClick={event=>{
@@ -49,6 +58,7 @@ function Welcome(){
                     setWantJoin(true);
                 }}>회원가입</Button> */}
             </div>}
+            </Box>
         </BrowserRouter>
     </div>
 }

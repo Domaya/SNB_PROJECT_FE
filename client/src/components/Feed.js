@@ -22,12 +22,9 @@ import Todo from './Todo';
 function Feed(){
   const [mydate, setMydate] = useState(new Date());
 
-  useEffect(()=>{
-    console.log("HEllo")
-  },[])
     return(<>
       <Grid container spacing={2}>
-        <Grid item xs = {3}>
+        <Grid padding={3}>
         <div>
         <Calendar onChange={setMydate} value={mydate} onClickDay={(value)=>{
         console.log("선택한 날짜 "+moment(value).format('YYMMDD'))
@@ -38,7 +35,7 @@ function Feed(){
       </div> 
         </Grid>
       
-        <Grid item xs={9}>
+        <Grid>
         </Grid>
       </Grid>
       <Todo mydate={mydate} />
