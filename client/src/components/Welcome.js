@@ -10,7 +10,7 @@ import { TextField } from '@mui/material';
 //회원가입과 로그인 기능
 //submit버튼 어떻게 mui 넣는지?
 
-function Welcome(){
+function Welcome(props){
     const [wantJoin, setWantJoin] = useState(false); //로그인할건지 회원가입할건지...초기엔 로그인 창 띄우게.
     const [inputId, setInputId] = useState('')
     const [inputPw, setInputPw] = useState('')
@@ -25,7 +25,7 @@ function Welcome(){
         event.preventDefault();
         console.log(inputId)
         console.log(inputPw)
-
+        props.onLogin(); //일단 무지성으로 로그인되게 해둠 개발용으루
         //서버로 보내기... axios? await?
         //response가 200이면 로그인
         //아니면 false...

@@ -12,26 +12,29 @@ import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Popover from '@mui/material/Popover';
+import {Button, Dialog, DialogContent, DialogActions} from "@mui/material";
 
 
-function Nav() {
-  const [auth, setAuth] = React.useState(true);
-
-  //어차피 로그인상태에서만 nav가 보이니까 true인지 판별할필요x
-  //추후에 수정
-  //로그아웃, 마이페이지 연결 기능...
-  //로고에 링크로 새로고침 기능
-
+function Nav(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [open, setOpen] = React.useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const handleClose = () => {
+  const handleClose = () =>{
     setAnchorEl(null);
+  }
+
+  const handleClickMyinfo = () => {
+
+    setOpen(true);
   };
+  const handleInfoClose = () => {
+    setOpen(false);
+    setAnchorEl(null)
+  }
   const theme = createTheme({
     palette: {
       primary: {
@@ -40,6 +43,11 @@ function Nav() {
       }
     }
   });
+
+  function handleCloseLogout(){
+    setAnchorEl(null);
+    props.onLogout();
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,7 +58,7 @@ function Nav() {
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             TO DO LIST
           </Typography>
-          {auth && (
+          
             <div>
               <IconButton
                 size="large"
@@ -77,14 +85,24 @@ function Nav() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>내 정보 보기</MenuItem>
-                <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+                <MenuItem onClick={handleClickMyinfo}>내 정보 보기
+                 
+                </MenuItem>
+                <MenuItem onClick={handleCloseLogout}>로그아웃</MenuItem>
               </Menu>
             </div>
-          )}
+          
         </Toolbar>
       </AppBar>
     </Box>
+    <Dialog open={open} onClose={handleInfoClose}>
+      <DialogContent>
+          유저정보
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleInfoClose}>^_^</Button>
+      </DialogActions>
+    </Dialog>
     </ThemeProvider>
   );
 }

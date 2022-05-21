@@ -30,7 +30,7 @@ function App() {
     <div className="App">
       {/* <Header userName={userName}/> */}
       
-      {isLoggedIn ?  <><Nav /><Home /></> : <Welcome />}
+      {isLoggedIn ?  <><Nav onLogout={()=>{setIsLoggedIn(false)}}/><Home /></> : <Welcome onLogin={()=>setIsLoggedIn(true)}/>}
       
       
     </div>
