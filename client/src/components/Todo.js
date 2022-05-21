@@ -69,7 +69,21 @@ function Todo(props){
             )
         )
     }
+    
+    function makeMark(todoItem){
+        let dateList = [];
+        todoItem.map((item)=>{
+            dateList.push(item.date);
+        })
+        const dateSet = new Set(dateList);
+        const dateArr= Array.from(dateSet)
+        return dateArr;
+    }
 
+    
+    useEffect(()=>{
+        props.setMarkDay(makeMark(todoItem))
+    }, [todoItem])
     useEffect(()=>{
         console.log(FilterTask())
         setTodayTask(FilterTask());
