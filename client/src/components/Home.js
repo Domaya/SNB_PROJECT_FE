@@ -5,7 +5,6 @@ import Feed from './Feed';
 function Home(){
 
     return <div>
-        <p>Home test</p>
         <Feed />
     </div>
 }

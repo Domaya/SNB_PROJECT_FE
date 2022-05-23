@@ -1,14 +1,25 @@
-import {React, useState, useEffect, useCallback} from 'react'
-import { Box, Button, Input, List, ListItem, ListItemButton, ListItemText, TextField, InputLabel, FormHelperText, IconButton } from '@mui/material';
+import {React, useState, useEffect} from 'react'
+import {ListItem, ListItemButton, ListItemText, TextField, IconButton } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import Checkbox from '@mui/material/Checkbox';
 import moment from 'moment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
+import styled from 'styled-components';
+
+const CheckList = styled.div`
+    background-color:ivory;
+`
+const ThisDate = styled.div`
+    font-size:25px;
+    font-weight:500;
+    font-family: 'Nanum Gothic', sans-serif;
+    padding : 6px 0px 6px 0px;
+`
+const InputField = styled.div`
+    margin-left : 15px;
+`
 
 function Todo(props){
     const mydate = moment(props.mydate).format('YYMMDD'); //220512와 같은 포맷으로..String임
@@ -97,24 +108,24 @@ function Todo(props){
         
 
         <FormGroup>
-            <div>
-            {moment(props.mydate).format("YYYY년 MM월 DD일 dddd")} 
-            </div>
+            <ThisDate>
+            {moment(props.mydate).format("YYYY년 MM월 DD일 ddd")} 
+            </ThisDate>
             
+            < InputField>
                 <form onSubmit={CreateItem}>
-                    <CheckBoxOutlineBlankIcon />
-                    <TextField id="outlined-basic" placeholder='오늘의 할 일은?' size='small' variant="outlined" onChange={onTaskHandler} />
-                    {/* <input type='text' placeholder='오늘의 할 일은?' onChange={onTaskHandler}></input> */}
-                    {/* <Button type='submit'></Button> */}
+                    <TextField id="outlined-basic" placeholder='오늘의 할 일은?' size='small' margin='dense' variant="outlined" onChange={onTaskHandler} />
                     <IconButton type={'submit'}>
                         <AddIcon />
                     </IconButton>
                 </form>
-            
+            </InputField>
+                <CheckList>
                 {todayTask.map((item)=>{
                     return <ListItem key={item.id}
+                        disableGutters
                         secondaryAction={
-                            <IconButton edge="end" aria-label="deletes" onClick={deleteItem(item)}>
+                            <IconButton aria-label="deletes"  onClick={deleteItem(item)}>
                             <DeleteIcon />
                           </IconButton>
                         }
@@ -123,23 +134,9 @@ function Todo(props){
                             <Checkbox disableRipple checked={item.done}/>
                             <ListItemText primary={`${item.content}  ${item.done}`}></ListItemText>
                         </ListItemButton>
-                        {/* <li >
-                            {item.done ?  <BiCheckboxChecked />: <BiCheckbox />}
-                            {item.content}+{item.id}
-                        </li> */}   
                         </ListItem>
-                    // <div key={item.id}>
-                        
-                    // {/* <ListItem > */}
-                    //     <FormControlLabel id={item.id} checked={item.done} onChange={(event)=>{
-                    //         {HandleChecked(event.target.checked, event.target.id)}
-                    //     }} control={<Checkbox />}
-                    //     label={item.content+" id:"+item.id+"   date:"+item.date+"   done:"+item.done}
-                    //     />
-                    // {/* </ListItem> */}
-                    // </div>
                 })}
-            
+            </CheckList>
             
         </FormGroup> 
         </>
