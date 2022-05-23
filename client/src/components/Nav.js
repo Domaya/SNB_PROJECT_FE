@@ -53,9 +53,13 @@ function Nav(props) {
     <ThemeProvider theme={theme}>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar >
+          <Typography  noWrap href="/" variant="h5" component="a" sx={{ flexGrow: 1,  mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',}}>
             TO DO LIST
           </Typography>
           

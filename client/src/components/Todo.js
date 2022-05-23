@@ -91,7 +91,19 @@ function Todo(props){
         return dateArr;
     }
 
-    
+    function checkDone(todayTask){
+        let flag = false;
+        for(let i=0; i<todayTask.length; i++){
+            if (todayTask[i].done===false){
+                console.log("flag"+flag)
+                return false;
+            }
+        }
+        flag = true;
+        console.log("flag"+flag);
+        return true;
+    }
+    const [perfectDay, setPerfectDay] = useState([])
     useEffect(()=>{
         props.setMarkDay(makeMark(todoItem))
     }, [todoItem])
@@ -101,7 +113,30 @@ function Todo(props){
     }, [mydate])
     useEffect(()=>{
         setTodayTask(FilterTask());
+        let day = checkDone(todayTask);
+        let copyPerfectDayArr = [...perfectDay]
+        let daySet = new Set();
+        if(day == true){
+            copyPerfectDayArr.push(mydate);
+            daySet = new Set(copyPerfectDayArr);
+            const dayArray = Array.from(daySet)
+            setPerfectDay(dayArray)
+            props.checkPerfect(perfectDay);
+        }
     }, [todoItem])
+    useEffect(()=>{
+        let day = checkDone(todayTask);
+        let copyPerfectDayArr = [...perfectDay]
+        let daySet = new Set();
+        props.checkDay(day);
+        if(day == true){
+            copyPerfectDayArr.push(mydate);
+            daySet = new Set(copyPerfectDayArr);
+            const dayArray = Array.from(daySet)
+            setPerfectDay(dayArray)
+            props.checkPerfect(perfectDay);
+        }
+    }, [todayTask])
 
 
     return(<>
