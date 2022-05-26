@@ -92,15 +92,11 @@ function Todo(props){
     }
 
     function checkDone(todayTask){ //하루일과의 done이 모두 true인지.
-        let flag = false;
         for(let i=0; i<todayTask.length; i++){
             if (todayTask[i].done===false){
-                console.log("flag"+flag)
                 return false;
             }
         }
-        flag = true;
-        console.log("flag"+flag);
         return true;
     }
     const [perfectDay, setPerfectDay] = useState([])
@@ -108,7 +104,6 @@ function Todo(props){
         props.setMarkDay(makeMark(todoItem))
     }, [todoItem])
     useEffect(()=>{
-        console.log("LET's FILTER .... ", FilterTask())
         setTodayTask(FilterTask());
     }, [mydate])
     useEffect(()=>{
@@ -118,7 +113,6 @@ function Todo(props){
         let day = checkDone(todayTask);
         let copyPerfectDayArr = [...perfectDay]
         props.checkDay(day);
-        console.log("DAY...할 일은 다 끝났나요? ", day)
         if(day == true){
             if(todayTask.length>0){
             copyPerfectDayArr.push(mydate);

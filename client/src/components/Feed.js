@@ -36,7 +36,6 @@ function Feed(){
   const [Alldone, setAllDone] = useState(false);
   const [goodDay, setGoodDay] = useState([]);
 
-    useEffect(()=>console.log(goodDay+"GOOD DAY?"), )
     return(<>
       <Grid container spacing={2}>
         <Grid padding={3}>
