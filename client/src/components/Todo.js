@@ -91,7 +91,7 @@ function Todo(props){
         return dateArr;
     }
 
-    function checkDone(todayTask){
+    function checkDone(todayTask){ //하루일과의 done이 모두 true인지.
         let flag = false;
         for(let i=0; i<todayTask.length; i++){
             if (todayTask[i].done===false){
@@ -108,35 +108,34 @@ function Todo(props){
         props.setMarkDay(makeMark(todoItem))
     }, [todoItem])
     useEffect(()=>{
-        console.log(FilterTask())
+        console.log("LET's FILTER .... ", FilterTask())
         setTodayTask(FilterTask());
     }, [mydate])
     useEffect(()=>{
         setTodayTask(FilterTask());
-        let day = checkDone(todayTask);
-        let copyPerfectDayArr = [...perfectDay]
-        let daySet = new Set();
-        if(day == true){
-            copyPerfectDayArr.push(mydate);
-            daySet = new Set(copyPerfectDayArr);
-            const dayArray = Array.from(daySet)
-            setPerfectDay(dayArray)
-            props.checkPerfect(perfectDay);
-        }
     }, [todoItem])
     useEffect(()=>{
         let day = checkDone(todayTask);
         let copyPerfectDayArr = [...perfectDay]
-        let daySet = new Set();
         props.checkDay(day);
+        console.log("DAY...할 일은 다 끝났나요? ", day)
         if(day == true){
+            if(todayTask.length>0){
             copyPerfectDayArr.push(mydate);
-            daySet = new Set(copyPerfectDayArr);
+            let daySet = new Set(copyPerfectDayArr);
             const dayArray = Array.from(daySet)
             setPerfectDay(dayArray)
-            props.checkPerfect(perfectDay);
+            // props.checkPerfect(perfectDay);
+            }
         }
-    }, [todayTask])
+        else if(day==false&& perfectDay.includes(mydate) ){
+            let newPerfectDay = perfectDay.filter((element)=>element!=mydate)
+            setPerfectDay(newPerfectDay);
+        }
+    },[todayTask])
+    useEffect(()=>{
+        props.checkPerfect(perfectDay);
+    }, )
 
 
     return(<>
