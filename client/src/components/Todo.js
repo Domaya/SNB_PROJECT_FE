@@ -26,10 +26,10 @@ function Todo(props){
 
     const [todoItem, setTodoItem] = useState(
         [
-            {id:0, content:"첫번째 아이템", done:false, date:moment().format('YYMMDD')},
+            {id:0, content:"첫번째 아이템", done:false, date:moment().format('220513')},
             {id:1, content:"test 2", done:true, date:'220513'},
-            {id:2, content:"머리감기", done:false, date:moment().format('YYMMDD')},
-            {id:3, content:"필라테스", done:false, date:moment().format('YYMMDD')},
+            {id:2, content:"머리감기", done:false, date:moment().format('220513')},
+            {id:3, content:"필라테스", done:true, date:moment().format('YYMMDD')},
             {id:4, content:"미용실", done:true, date:moment().format('YYMMDD')},
         ]
     )
@@ -55,9 +55,10 @@ function Todo(props){
     }
     
    
-    function FilterTask(){
+    function FilterTask(thedate){
+        if(thedate==null) thedate=mydate;
         const items = todoItem.filter(item => {
-            return item.date == mydate;
+            return item.date == thedate;
         })
         return items
     }
@@ -91,6 +92,7 @@ function Todo(props){
         return dateArr;
     }
 
+
     function checkDone(todayTask){ //하루일과의 done이 모두 true인지.
         for(let i=0; i<todayTask.length; i++){
             if (todayTask[i].done===false){
@@ -99,16 +101,45 @@ function Todo(props){
         }
         return true;
     }
+
+    function firstRender(){
+        //최초렌더시 모든 날짜의 done여부를 확인해서 캘린더에 css를 적용해줄것이다
+        let sortedItem = todoItem.sort(function(a, b){
+            return Number(a.date) - Number(b.date);
+        })
+        let tempSortedItem = [];
+        let sliceDay = [];
+        let firstDates = []
+        const todoItemLength = Object.keys(todoItem).length
+        for(let i=0; i <todoItemLength; i++){
+            console.log(sliceDay)
+            if(i==0){
+                sliceDay.push(sortedItem[i]);
+                continue;
+            }
+            if(sortedItem[i].date == sliceDay[0].date){
+                sliceDay.push(sortedItem[i]);
+                continue;
+            }else{ //날짜가 달라지는 순간
+                tempSortedItem = sortedItem.slice(i);
+                if(checkDone(FilterTask(sortedItem[0].date))==true){
+                    firstDates.push(sortedItem[0].date)
+                }
+                break;
+            }
+        }
+        setPerfectDay(firstDates);
+    }
+
+
     const [perfectDay, setPerfectDay] = useState([])
     useEffect(()=>{
         props.setMarkDay(makeMark(todoItem))
+        setTodayTask(FilterTask());
     }, [todoItem])
     useEffect(()=>{
         setTodayTask(FilterTask());
     }, [mydate])
-    useEffect(()=>{
-        setTodayTask(FilterTask());
-    }, [todoItem])
     useEffect(()=>{
         let day = checkDone(todayTask);
         let copyPerfectDayArr = [...perfectDay]
@@ -131,6 +162,14 @@ function Todo(props){
         props.checkPerfect(perfectDay);
     }, )
 
+    useEffect(()=>{
+        firstRender();
+        console.log("First")
+    }, [])
+
+    useEffect(()=>{
+        console.log("PERFECT",perfectDay)
+    }, [perfectDay])
 
     return(<>
         

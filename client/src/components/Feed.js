@@ -11,7 +11,7 @@ import { color } from '@mui/system';
 const Dot = styled.div`
   height: 2px;
   width: 42px;
-  background-color: #f87171;
+  background-color: #3CA03C;
   border-radius: 0%;
   display: flex;
   margin-left: 1px;
@@ -19,7 +19,7 @@ const Dot = styled.div`
 const BestDot = styled.div`
   height: 2px;
   width: 42px;
-  background-color: black;
+  background-color: #f87171;
   border-radius: 0%;
   display: flex;
   margin-left: 1px;
