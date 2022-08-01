@@ -21,6 +21,7 @@ const InputField = styled.div`
     margin-left : 15px;
 `
 
+
 function Todo(props){
     const mydate = moment(props.mydate).format('YYMMDD'); //220512와 같은 포맷으로..String임
 
@@ -131,6 +132,11 @@ function Todo(props){
         setPerfectDay(firstDates);
     }
 
+    function getStyle(done){
+        return{
+            textDecoration : done ? "line-through" : "none",
+        }
+    }
 
     const [perfectDay, setPerfectDay] = useState([])
     useEffect(()=>{
@@ -199,7 +205,7 @@ function Todo(props){
                     >
                         <ListItemButton disableRipple onClick={onToggle(item)}>
                             <Checkbox disableRipple checked={item.done}/>
-                            <ListItemText primary={`${item.content}  ${item.done}`}></ListItemText>
+                            <ListItemText style={getStyle(item.done)} primary={`${item.content}  ${item.done}`}></ListItemText>
                         </ListItemButton>
                         </ListItem>
                 })}

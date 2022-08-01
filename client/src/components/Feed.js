@@ -38,7 +38,7 @@ function Feed(){
 
     return(<>
       <Grid container spacing={2}>
-        <Grid padding={3}>
+        <Grid padding={3} >
           <div>
           <Calendar onChange={setMydate} value={mydate}
           showNeighboringMonth={false} 
@@ -56,7 +56,7 @@ function Feed(){
               else
                 return <Dot></Dot>
               
-            }
+              }
             }
           }
           />
